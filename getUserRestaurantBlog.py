@@ -1,13 +1,23 @@
 # -*- coding: utf-8 -*-
 # 使python可以讀取中文
 
+### 抓取的起點與結束點
+beginIndex = 100000 #起始點
+endIndex = 110000 #結束點,抓到這筆之前的資料
+
+### 設定多少筆存一次，請勿更動，目前決定以1000筆存一次
+save_count=1000
+
+
 ### import 區#############################################################################
 import os
 import time
 import json
+import copy
 import requests
 from requests.adapters import HTTPAdapter
-import copy
+rs = requests.session()
+rs.mount('https://', HTTPAdapter(max_retries=3)) #設定重試數量
 
 
 ### function(def) 宣告區######################################################################
@@ -33,8 +43,7 @@ def PrintKeyValue(dic_in):
 ###### 輸出錯誤訊息 #############################
 def createLog(log, type1):
     date = time.strftime('%Y%m%d')
-    mkdir('./log/')
-    with open('./log/%s_%s.txt' % (type, date), 'a') as f:
+    with open('./data/log/%s_%s.txt' % (type1, date), 'a') as f:
         f.write(log+'\n')
 ###########################################
 
@@ -80,15 +89,18 @@ mkdir('./data/user')
 mkdir('./data/restaurant')
 #blog爬取後存放的資料夾
 mkdir('./data/blog')
-
+#發生except之log後存放的資料夾
+mkdir('./data/log/')
 
 # 讀檔：使用者清單，已預先抓好，約29萬筆
 with open('./data/userlist.json','r') as f:
     userlist = json.load(f)
 
 
-beginIndex = 0 #起始點
-endIndex = 10 #結束點,抓到這筆之前的資料
+loop=0
+count=0
+
+
 userlist_select = userlist['users'][beginIndex:endIndex] #抓取範圍
 user = {} #最後要輸出的user json
 response = [] #各個user字典檔的存放位置
@@ -101,13 +113,10 @@ blogs = [] #各blog字典檔的存放位置
 
 
 
-rs = requests.session()
-rs.mount('https://', HTTPAdapter(max_retries=3)) #設定重試數量
-
 # 依序抓取userlist_select中的id
 # Test : 暫時將userlist_select設為
 # userlist_select = ["55e513b32756dd75cdcda671"]
-userlist_select = ["562de59a699b6e639b5baa77"]   #跟著羽諾吃喝玩樂去～
+# userlist_select = ["562de59a699b6e639b5baa77"]   #跟著羽諾吃喝玩樂去～
 
 for u in userlist_select:
     try:
@@ -248,23 +257,62 @@ for u in userlist_select:
 #     print "================"
 #     PrintKeyValue(i)   
         
+    count+=1
+    if count %save_count==0:               
+        user['user'] = response
+        restat['restaurant'] = restList
+        blogInfo['blog'] = blogs      
         
-user['user'] = response
-restat['restaurant'] = restList
-blogInfo['blog'] = blogs      
-      
-try:
-    with open('./data/user/ifoodUsers_%d_%d.json' % (beginIndex, endIndex), 'w') as f:
-        json.dump(user, f)
-    with open('./data/restaurant/ifoodRestaurant_%d_%d.json' % (beginIndex, endIndex), 'w') as f:
-        json.dump(restat, f)
-    with open('./data/blog/ifoodBlog_%d_%d.json' % (beginIndex, endIndex), 'w') as f:
-        json.dump(blogInfo, f)
-except:
-    print 'Failed'
+        file_anme_star=beginIndex+save_count*loop
+        file_anme_end=beginIndex+count-1
+        
+        try:
+            with open('./data/user/ifoodUsers_%d_%d.json' % (file_anme_star, file_anme_end), 'w') as f:
+                json.dump(user, f)
+            with open('./data/restaurant/ifoodRestaurant_%d_%d.json' % (file_anme_star, file_anme_end), 'w') as f:
+                json.dump(restat, f)
+            with open('./data/blog/ifoodBlog_%d_%d.json' % (file_anme_star, file_anme_end), 'w') as f:
+                json.dump(blogInfo, f)
+            
+            user = {} #最後要輸出的user json
+            response = [] #各個user字典檔的存放位置
+            restat = {} #最後要輸出的餐廳 json
+            restList = [] #各餐廳字典檔的存放位置
+            blogInfo = {} #最後要輸出的blog json
+            blogs = [] #各blog字典檔的存放位置
+            loop+=1
+        except:
+            print 'Failed'
+     
+        
+    elif u == userlist_select[endIndex-beginIndex-1]:  
+        user['user'] = response
+        restat['restaurant'] = restList
+        blogInfo['blog'] = blogs      
+        
+        file_anme_star=beginIndex+save_count*loop
+        file_anme_end=beginIndex+count-1
+        
+        try:
+            with open('./data/user/ifoodUsers_%d_%d.json' % (file_anme_star, file_anme_end), 'w') as f:
+                json.dump(user, f)
+            with open('./data/restaurant/ifoodRestaurant_%d_%d.json' % (file_anme_star, file_anme_end), 'w') as f:
+                json.dump(restat, f)
+            with open('./data/blog/ifoodBlog_%d_%d.json' % (file_anme_star, file_anme_end), 'w') as f:
+                json.dump(blogInfo, f)
+            loop+=1
+        except:
+            print 'Failed'
+        
+        
+        
+        
+        
+        
 time_end_to_grab = time.time()
-
-print '總共花了',time_end_to_grab - time_start_to_grab,'秒'             
+print '總共花了 ',time_end_to_grab - time_start_to_grab,' 秒'   
+print '總共存了 ',loop,' 組檔案'          
+# print '發生 ',exceptCount,' 次 except'     
 
     
 
