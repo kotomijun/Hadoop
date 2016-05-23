@@ -3,22 +3,22 @@
 *blog_type是用來分辨不同網站的blog要再寫規則去定義,初步用主域做分類即可
 {	"user":[
 			{	
-				_id   						:	使用者id   
-				fav_cnt						:	分類清單-收藏清單的總數量   
-				follower_cnt				:	擁有的粉絲總數量  
-				display_name				:	愛食記上的使用者名稱
-				following_cnt				:	追蹤別人的總數  
-				post_cnt					:	當下食記總篇數  
-				profile_pic_origin			:	大頭照的原始圖檔-staticflickr or facebook   
-				browse_cnt					:	文章被瀏覽總次數  
-				checkin_cnt					:	●●●●●動態總次數●●●●● 
-				fans_id_list[]				:	粉絲id所成的陣列  
-				certified   				:	●●●●●證明合格? 新帳號沒發食記過食記，似乎就不會被認證●●●●●
-				blog_id_list[]   			:	使用者所有文章所成的陣列(愛食記文章id)
+				_id  				:	使用者id   
+				fav_cnt				:	分類清單-收藏清單的總數量   
+				follower_cnt			:	擁有的粉絲總數量  
+				display_name			:	愛食記上的使用者名稱
+				following_cnt			:	追蹤別人的總數  
+				post_cnt			:	當下食記總篇數  
+				profile_pic_origin		:	大頭照的原始圖檔-staticflickr or facebook   
+				browse_cnt			:	文章被瀏覽總次數  
+				checkin_cnt			:	●●●●●動態總次數●●●●● 
+				fans_id_list[]			:	粉絲id所成的陣列  
+				certified   			:	●●●●●證明合格?											新帳號沒發食記過食記，似乎就不會被認證●●●●●
+				blog_id_list[]   		:	使用者所有文章所成的陣列(愛食記文章id)
 				collection_blog_list[]		:	餐藏清單的文章列表的陣列(愛食記文章id)
 				recommendation_blog_list[]	:	推薦餐廳的文章列表的陣列(愛食記文章id)
-				visit_blog_list[]			:	曾經到訪的文章列表的陣列(愛食記文章id)	
-				timestamp					:	使用者資料抓取完成的時間
+				visit_blog_list[]		:	曾經到訪的文章列表的陣列(愛食記文章id)	
+				timestamp			:	使用者資料抓取完成的時間
 			}
 		]
 	
@@ -34,20 +34,19 @@
 						name  			:   餐廳名稱
 						last_visit 		:   某位使用者到訪餐的日期
 						phone   		:   餐廳的電話
-						opening_hours   :   營業時間資訊(如：今日營業: 11:00-23:00，僅顯示當天)
-						avg_price   	:   平均消費金額
-						blog_cnt   		:   餐廳被寫部落格的總數(有些人雖然有寫食記，但並沒有到訪紀錄，因此次數會與visit_cnt不同)
+						opening_hours   	:   營業時間資訊(如：今日營業: 11:00-23:00，僅顯示當天)
+						avg_price   		:   平均消費金額
+						blog_cnt   		:   餐廳被寫部落格的總數
+								(有些人雖然有寫食記，但並沒有到訪紀錄，因此次數會與visit_cnt不同)
 						visit_cnt		:   訪客到訪的動態總數(而有些人雖然沒寫食記，但有到訪動態的記錄)
-						cover_url   	:   餐廳的照片(愛食記是說他們有經使用者授權，不過我猜是餐廳第一篇po文的照片，可能在註冊合約有說我們的照片可能會被他們她去使用，
-											而第一篇po文不一定是日期最早的，因為可能有使用者在第一篇po文後將舊文章匯入愛食記)
-						cover_author	:   文章找所有者在愛食記的使用者名稱
+						cover_url   		:   餐廳的照片			(愛食記是說他們有經使用者授權，不過我猜是餐廳第一篇po文的照片，可能在註冊合約有說我們的照片可能會被他們她去使用，而第一篇po文不一定是日期最早的，因為可能有使用者在第一篇po文後將舊文章匯入愛食記)
+						cover_author		:   文章找所有者在愛食記的使用者名稱
 						admin_name		:   餐廳所在區或鄉
 						address			:   餐廳的住址
-						lat   			:	北緯
+						lat   			:   北緯
 						lng   			:   東經
 						timestamp		:   餐廳資訊抓取的時間
 					}
-
 				]
 }
 
@@ -59,17 +58,17 @@
 {	"blog":[
 				{	
 					_id   			:   食記在愛食記的id(準備連結到食記實際存在位置之頁面)
-					blog_type   	:   部落格種類(如:leafphoto.pixnet.net)
+					blog_typ	 	:   部落格種類(如:leafphoto.pixnet.net)
 					title   		:	在愛食記文章的標題
-					url   			:   食記原始的完整網址(如:http://leafphoto.pixnet.net/blog/post/32917623)
+					url   			:   食記原始的完整網址(如:http://leafphoto.pixnet.net/blog/pos/3291762)
 					is_paid   		:   是否為邀約文章(Ture or False)
-					recommend_cnt   :   文章被推薦之總次數
-					browse_cnt   	:   文章被瀏覽之總次數
-					favorite_cnt	:   文章被收藏之總次數
-					share_cnt   	:   文章被分享之總次數
+					recommend_cn		:   文章被推薦之總次數
+					browse_cnt		:   文章被瀏覽之總次數
+					favorite_cnt		:   文章被收藏之總次數
+					share_cnt   		:   文章被分享之總次數
 					date   			:   1288166400.0
-					restaurant_id   :   餐廳在愛食記的id
-					timestamp   	:   資料抓完的當下時間
+					restaurant_id   	:   餐廳在愛食記的id
+					timestamp   		:   資料抓完的當下時間
 				}
 			]
 }
